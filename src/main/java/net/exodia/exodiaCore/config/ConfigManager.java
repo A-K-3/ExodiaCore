@@ -1,9 +1,8 @@
 package net.exodia.exodiaCore.config;
 
-import com.reussy.development.staffutilities.plugin.StaffUtilitiesPlugin;
-import com.reussy.development.staffutilities.plugin.exceptions.PluginErrorException;
-import com.reussy.development.staffutilities.plugin.utils.Utils;
 import net.exodia.exodiaCore.ExodiaCore;
+import net.exodia.exodiaCore.exceptions.PluginErrorException;
+import net.exodia.exodiaCore.utils.plugin.PluginUtils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -75,7 +74,7 @@ public class ConfigManager {
         }
 
         String value = config.getString(path + "." + key, "N/A");
-        byte[] bytes = value != null ? value.getBytes(StandardCharsets.ISO_8859_1) : new byte[0];
+        byte[] bytes = value.getBytes(StandardCharsets.ISO_8859_1);
         value = new String(bytes, StandardCharsets.UTF_8);
         String finalValue = value;
 
@@ -84,7 +83,7 @@ public class ConfigManager {
         }});
 
         if (value.equals("N/A")) {
-            Utils.sendWarnMessage("The value " + path + "." + key + " is not set in the " + file.getName() + " file!");
+            PluginUtils.sendWarnMessage("The value " + path + "." + key + " is not set in the " + file.getName() + " file!");
         }
 
         return value;

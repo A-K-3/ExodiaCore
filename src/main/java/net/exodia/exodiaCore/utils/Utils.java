@@ -1,21 +1,13 @@
 package net.exodia.exodiaCore.utils;
 
-import com.cryptomorin.xseries.XSound;
-import com.reussy.development.staffutilities.plugin.StaffUtilitiesPlugin;
-import com.reussy.development.staffutilities.plugin.exceptions.PluginErrorException;
-import com.reussy.development.staffutilities.plugin.module.staff.CustomItemStack;
-import com.reussy.development.staffutilities.plugin.sql.entity.types.SanctionType;
 import net.exodia.exodiaCore.ExodiaCore;
-import net.exodia.exodiaCore.utils.plugin.message.ExodusMessageType;
-import net.exodia.exodiaCore.utils.plugin.message.TranslateHexColorCodes;
+import net.exodia.exodiaCore.utils.plugin.PluginUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -23,169 +15,8 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-import static org.bukkit.ChatColor.translateAlternateColorCodes;
-
 public class Utils {
 
-    /* Clase con utilidades para el plugin */
-
-
-
-    public static String colorize(String message) {
-        message = TranslateHexColorCodes.translateHexColorCodes("&#", "", message);
-        message = translateAlternateColorCodes('&', message);
-
-        return message;
-    }
-
-
-    /**
-     * Send a colorized message to the player.
-     *
-     * @param player  The player related.
-     * @param message The message to send.
-     */
-    public static void send(Player player, String message) {
-        if (message == null || message.isEmpty() || player == null) return;
-
-        player.sendMessage(colorize(message));
-    }
-
-    /**
-     * Send a colorized message to a command sender.
-     *
-     * @param sender  The command sender related.
-     * @param message The message to send.
-     */
-    public static void send(CommandSender sender, String message) {
-        if (message == null || message.isEmpty() || sender == null) return;
-
-        sender.sendMessage(colorize(message));
-    }
-
-    /**
-     * Send a colorized message to the player.
-     *
-     * @param player  The player related.
-     * @param message The message to send.
-     */
-    public static void send(Player player, List<String> message) {
-        if (message == null || message.isEmpty() || player == null) return;
-        message.forEach(line -> send(player, line));
-    }
-
-    /**
-     * Send a colorized message to the player list.
-     *
-     * @param players The list of player's related.
-     * @param message The message to send.
-     */
-    public static void send(Collection<Player> players, String message) {
-        if (message == null || message.isEmpty() || players.isEmpty()) return;
-
-        players.forEach(player -> send(player, message));
-    }
-
-    /**
-     * Send a colorized message to the player list.
-     *
-     * @param players The list of player's related.
-     * @param message The message to send.
-     */
-    public static void send(Collection<Player> players, List<String> message) {
-        if (message == null || message.isEmpty() || players.isEmpty()) return;
-
-        players.forEach(player -> message.forEach(line -> send(player, line)));
-    }
-
-    /**
-     * Send a colorized message to the player.
-     *
-     * @param player       The player related.
-     * @param message      The message to send.
-     * @param placeholders The placeholders to replace.
-     */
-    public static void send(Player player, String message, String[][] placeholders) {
-        if (message == null || message.isEmpty() || player == null) return;
-
-        for (String[] placeholder : placeholders) {
-            message = message.replace(placeholder[0], placeholder[1]);
-        }
-
-        send(player, colorize(message));
-    }
-
-    /**
-     * Send a colorized message to the sender with placeholders.
-     *
-     * @param sender       The sender related.
-     * @param message      The message to send.
-     * @param placeholders The placeholders to replace.
-     */
-    public static void send(CommandSender sender, String message, String[][] placeholders) {
-        if (message == null || message.isEmpty() || sender == null) return;
-
-        for (String[] placeholder : placeholders) {
-            message = message.replace(placeholder[0], placeholder[1]);
-        }
-
-        send(sender, colorize(message));
-    }
-
-    /**
-     * Send a colorized message to the player.
-     *
-     * @param player       The player related.
-     * @param message      The message to send.
-     * @param placeholders The placeholders to replace.
-     */
-    public static void send(Player player, List<String> message, String[][] placeholders) {
-        if (message == null || message.isEmpty() || player == null) return;
-
-        for (String[] placeholder : placeholders) {
-            message = message.stream().map(line -> line.replace(placeholder[0], placeholder[1])).collect(Collectors.toList());
-        }
-
-        message.forEach(line -> send(player, line));
-    }
-
-    /**
-     * Send a colorized message to the command sender.
-     *
-     * @param sender       The sender of the command.
-     * @param message      The message to send.
-     * @param placeholders The placeholders to replace.
-     */
-    public static void send(CommandSender sender, List<String> message, String[][] placeholders) {
-        if (message == null || message.isEmpty() || sender == null) return;
-
-        if (placeholders != null) {
-            for (String[] placeholder : placeholders) {
-                message = message.stream().map(line -> line.replace(placeholder[0], placeholder[1])).collect(Collectors.toList());
-            }
-        }
-
-        message.forEach(line -> send(sender, line));
-    }
-
-    /**
-     * Send a colorized message to the player list.
-     *
-     * @param players      The players related.
-     * @param message      The message to send.
-     * @param placeholders The placeholders to replace.
-     */
-    public static void send(Collection<Player> players, String message, String[][] placeholders) {
-        if (message == null || message.isEmpty()) return;
-
-        for (String[] placeholder : placeholders) {
-            message = message.replace(placeholder[0], placeholder[1]);
-        }
-
-        for (Player player : players) {
-            send(player, message, placeholders);
-        }
-    }
 
     /**
      * Play a minecraft sound to the player.
@@ -225,35 +56,11 @@ public class Utils {
      * @param volume The volume of the sound.
      * @param pitch  The pitch of the sound.
      */
-    public static void play(Player player, XSound sound, float volume, float pitch) {
+    public static void play(Player player, Sound sound, float volume, float pitch) {
 
         if (sound == null || player == null) return;
 
-        sound.play(player, volume, pitch);
-    }
-
-    /**
-     * Play a XSeries Sound parsed to a Minecraft Sound
-     * This method follow the format SOUND:VOLUME:PITCH
-     *
-     * @param player The player related.
-     * @param format The format of the sound.
-     */
-    public static void play(Player player, String format) {
-
-        if (format == null || format.isEmpty() || format.equalsIgnoreCase("none")) return;
-
-        String[] split = format.split(":");
-
-        if (split.length != 3) {
-            throw new PluginErrorException("The format for the sound " + format + " is invalid. The format must be SOUND:VOLUME:PITCH", new IndexOutOfBoundsException());
-        }
-
-        Optional<XSound> xSound = XSound.matchXSound(split[0]);
-        float volume = split[1].length() == 0 ? 1 : Float.parseFloat(split[1]);
-        float pitch = split[2].length() == 0 ? 1 : Float.parseFloat(split[2]);
-
-        xSound.ifPresent(value -> play(player, value, volume, pitch));
+        player.playSound(player.getLocation(), sound, volume, pitch);
     }
 
     public static Collection<Player> getFiltered(String permission) {
@@ -264,7 +71,7 @@ public class Utils {
 
         if (sender == null || command == null || command.isEmpty()) return false;
 
-        Bukkit.getScheduler().scheduleSyncDelayedTask(StaffUtilitiesPlugin.getPlugin(StaffUtilitiesPlugin.class), () -> Bukkit.dispatchCommand(sender, command));
+        Bukkit.getScheduler().scheduleSyncDelayedTask(PluginUtils.PLUGIN, () -> Bukkit.dispatchCommand(sender, command));
 
         return true;
     }
@@ -277,20 +84,10 @@ public class Utils {
                 .replace(" ", "")
                 .replace(",", "\n")
                 .lines()
-                .filter(l -> l.contains("com.reussy"))
+                .filter(l -> l.contains("net.exodia"))
                 .map(a -> a.substring(a.lastIndexOf("//") + 2))
                 .collect(Collectors.joining("\n"));
 
-    }
-
-    @Contract(pure = true)
-    public static String getPrettyName(@NotNull SanctionType sanctionType) {
-        return switch (sanctionType) {
-            case BAN -> "Ban";
-            case MUTE -> "Mute";
-            case KICK -> "Kick";
-            case WARN -> "Warn";
-        };
     }
 
     /* Parámetros para pasar: Numeros + Letra
@@ -377,19 +174,6 @@ public class Utils {
         return (days > 0 ? days + "d " : "") + (hours > 0 ? hours + "h " : "") + (minutes > 0 ? minutes + "m " : "") + (secs > 0 ? secs + "s " : "");
     }
 
-    public static @NotNull List<CustomItemStack> saveInventory(@NotNull Inventory inventory) {
-        final List<CustomItemStack> customItemStacks = new ArrayList<>();
-
-        for (int i = 0; i <= inventory.getContents().length; i++) {
-
-            if (inventory.getItem(i) == null) continue;
-
-            ItemStack item = inventory.getItem(i);
-            customItemStacks.add(new CustomItemStack(i, item));
-        }
-
-        return customItemStacks;
-    }
 
     public static @Nullable String getTextAsParameter(String @NotNull [] args, int index) {
         StringBuilder text = new StringBuilder();
@@ -397,7 +181,7 @@ public class Utils {
             if (args[i] != null) text.append(args[i]).append(" ");
         }
 
-        if (text.toString().trim().length() == 0) return null;
+        if (text.toString().trim().isEmpty()) return null;
         return text.toString();
 
     }
@@ -410,7 +194,7 @@ public class Utils {
     }
 
     static public Location getLocationString(final String s) {
-        if (s == null || s.trim().equals("")) {
+        if (s == null || s.trim().isEmpty()) {
             return null;
         }
         final String[] parts = s.split(":");
@@ -423,6 +207,4 @@ public class Utils {
         }
         return null;
     }
-
-
 }

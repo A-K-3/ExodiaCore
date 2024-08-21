@@ -1,7 +1,7 @@
 package net.exodia.exodiaCore.config;
 
-import com.reussy.development.staffutilities.plugin.StaffUtilitiesPlugin;
-import com.reussy.development.staffutilities.plugin.utils.Utils;
+import net.exodia.exodiaCore.ExodiaCore;
+import net.exodia.exodiaCore.utils.plugin.PluginUtils;
 
 public class MessagesManager extends ConfigManager {
 
@@ -10,12 +10,12 @@ public class MessagesManager extends ConfigManager {
 
     private String path = "messages";
 
-    public MessagesManager(StaffUtilitiesPlugin plugin, String fileName) {
+    public MessagesManager(ExodiaCore plugin, String fileName) {
         super(plugin, fileName);
     }
 
     // Segundo constructor, por si el path no es "messages"
-    public MessagesManager(StaffUtilitiesPlugin plugin, String fileName, String path) {
+    public MessagesManager(ExodiaCore plugin, String fileName, String path) {
         super(plugin, fileName);
         this.path = path;
     }
@@ -25,7 +25,7 @@ public class MessagesManager extends ConfigManager {
     // get(key) -> Añade el prefix
     // get(key, true) -> Añade el prefix
     public String get(PluginMessages key, Boolean... prefix) {
-        return prefix.length != 0 && !prefix[0] ? get(this.path, key.get()) : Utils.PREFIX + get(this.path, key.get());
+        return prefix.length != 0 && !prefix[0] ? get(this.path, key.get()) : PluginUtils.PREFIX + get(this.path, key.get());
     }
 
     public void reload() {
