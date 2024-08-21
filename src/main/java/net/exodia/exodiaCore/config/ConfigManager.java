@@ -57,7 +57,7 @@ public class ConfigManager {
         this.file = new File(files[0], files[1].getName());
         config = YamlConfiguration.loadConfiguration(file);
 
-        saveResource(plugin, resourcePath, files[1], files[0], false);
+        saveResource(plugin, resourcePath, files[1], files[0]);
     }
 
     public String get(String path, String key) {
@@ -127,8 +127,8 @@ public class ConfigManager {
         config = YamlConfiguration.loadConfiguration(file);
     }
 
-    private void saveResource(JavaPlugin plugin, @NotNull String resourcePath, @NotNull File config, @NotNull File folder, boolean replace) {
-        if (!resourcePath.equals("")) {
+    private void saveResource(JavaPlugin plugin, @NotNull String resourcePath, @NotNull File config, @NotNull File folder) {
+        if (!resourcePath.isEmpty()) {
             resourcePath = resourcePath.replace('\\', '/');
             InputStream in = plugin.getResource(resourcePath);
             if (in == null) {
@@ -136,15 +136,13 @@ public class ConfigManager {
             } else {
                 File outFile = new File(folder, resourcePath);
                 int lastIndex = resourcePath.lastIndexOf(47);
-                File outDir = new File(folder, resourcePath.substring(0, lastIndex >= 0 ? lastIndex : 0));
+                File outDir = new File(folder, resourcePath.substring(0, Math.max(lastIndex, 0)));
                 if (!outDir.exists()) {
                     outDir.mkdirs();
                 }
 
                 try {
-                    if (outFile.exists() && !replace) {
-
-                    } else {
+                    if (!outFile.exists()) {
                         OutputStream out = new FileOutputStream(outFile);
                         byte[] buf = new byte[1024];
 
