@@ -1,4 +1,4 @@
-package net.exodia.exodiaCore.config;
+package net.exodia.exodiaCore.manager.config;
 
 public enum PluginMessages {
 

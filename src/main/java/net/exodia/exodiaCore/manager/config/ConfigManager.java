@@ -1,4 +1,4 @@
-package net.exodia.exodiaCore.config;
+package net.exodia.exodiaCore.manager.config;
 
 import net.exodia.exodiaCore.ExodiaCore;
 import net.exodia.exodiaCore.exceptions.PluginErrorException;
