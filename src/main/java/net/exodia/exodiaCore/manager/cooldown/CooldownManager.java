@@ -1,63 +1,52 @@
 package net.exodia.exodiaCore.manager.cooldown;
 
-import com.reussy.development.staffutilities.plugin.StaffUtilitiesPlugin;
-import com.reussy.development.staffutilities.plugin.sql.entity.UserEntity;
+import net.exodia.exodiaCore.ExodiaCore;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class CooldownManager {
 
     public static final int DEFAULT_COOLDOWN = 60;
-    private final StaffUtilitiesPlugin plugin;
+    private final ExodiaCore plugin;
 
-    private final Map<UserEntity, HashMap<CooldownType, Integer>> cooldowns;
+    private final Map<UUID, HashMap<CooldownType, Integer>> cooldowns;
 
-    public CooldownManager(StaffUtilitiesPlugin plugin) {
+    public CooldownManager(ExodiaCore plugin) {
         this.plugin = plugin;
         this.cooldowns = new ConcurrentHashMap<>();
     }
 
-    public boolean hasCooldown(UserEntity user, CooldownType type) {
-        return cooldowns.getOrDefault(user, new HashMap<>()).containsKey(type);
+    public boolean hasCooldown(UUID userId, CooldownType type) {
+        return cooldowns.getOrDefault(userId, new HashMap<>()).containsKey(type);
     }
 
-    public Integer getCooldown(UserEntity user, CooldownType type) {
-        return cooldowns.getOrDefault(user, new HashMap<>()).getOrDefault(type, 0);
+    public Integer getCooldown(UUID userId, CooldownType type) {
+        return cooldowns.getOrDefault(userId, new HashMap<>()).getOrDefault(type, 0);
     }
 
-    public void setCooldown(UserEntity user, CooldownType type, int seconds) {
+    public void setCooldown(UUID userId, CooldownType type, int seconds) {
+        cooldowns.computeIfAbsent(userId, k -> new HashMap<>()).put(type, seconds);
+        createScheduledCooldown(userId, type);
+    }
 
-        if (cooldowns.containsKey(user)) {
-
-            if (cooldowns.get(user).containsKey(type) && cooldowns.get(user).containsKey(type)) {
-                cooldowns.get(user).put(type, seconds);
-            } else {
-                cooldowns.get(user).put(type, seconds);
-                createScheduledCooldown(user, type);
-            }
-        } else {
-            cooldowns.put(user, new HashMap<>());
-            cooldowns.get(user).put(type, seconds);
-            setCooldown(user, type, seconds);
-            createScheduledCooldown(user, type);
+    public void removeCooldown(UUID userId, CooldownType type) {
+        if (cooldowns.containsKey(userId)) {
+            cooldowns.get(userId).remove(type);
         }
     }
 
-    public void removeCooldown(UserEntity user, CooldownType type) {
-        if (cooldowns.containsKey(user) && cooldowns.get(user).containsKey(type)) setCooldown(user, type, 0);
-    }
-
-    public void createScheduledCooldown(UserEntity user, CooldownType type) {
+    public void createScheduledCooldown(UUID userId, CooldownType type) {
         new BukkitRunnable() {
             @Override
             public void run() {
-                int timeLeft = getCooldown(user, type);
-                setCooldown(user, type, timeLeft - 1);
+                int timeLeft = getCooldown(userId, type);
+                setCooldown(userId, type, timeLeft - 1);
                 if (timeLeft == 0) {
-                    cooldowns.get(user).remove(type);
+                    cooldowns.get(userId).remove(type);
                     this.cancel();
                 }
             }
