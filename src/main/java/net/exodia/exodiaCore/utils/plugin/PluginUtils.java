@@ -10,7 +10,7 @@ public class PluginUtils {
 
     public static final ExodiaCore PLUGIN = ExodiaCore.getPlugin(ExodiaCore.class);
     public static final String PLUGIN_NAME = PLUGIN.getDescription().getName();
-    public static final String PREFIX = PLUGIN.getConfigManager().get("messages", "prefix");
+    public static final String PREFIX = PLUGIN.configManager.get("messages", "prefix");
     private static final String SEPARATOR = "&e&m========================================================================";
 
     public static void sendWarnMessage(String message) {
@@ -30,7 +30,7 @@ public class PluginUtils {
     }
 
     public static void sendDebugMessage(String message) {
-        if (!PLUGIN.getConfigManager().getBoolean("general", "debug"))
+        if (!PLUGIN.configManager.getBoolean("general", "debug"))
             return;
         sendConsoleMessage(ExodusMessageType.DEBUG.get() + message);
     }
@@ -40,10 +40,10 @@ public class PluginUtils {
     }
 
     public static void disablePlugin() {
-        if (PLUGIN.getPluginStatus().isDisabling() || PLUGIN.getPluginStatus().isDisabled())
+        if (PLUGIN.pluginManager.isDisabling() || PLUGIN.pluginManager.isDisabled())
             return;
 
-        PLUGIN.getPluginStatus().setStatus(PluginStatus.DISABLING);
+        PLUGIN.pluginManager.setStatus(PluginStatus.DISABLING);
         PLUGIN.getServer().getPluginManager().disablePlugin(PLUGIN);
     }
 

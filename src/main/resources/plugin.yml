@@ -1,0 +1,13 @@
+name: ExodiaCore
+version: '1.0'
+main: net.exodia.exodiaCore.ExodiaCore
+api-version: '1.21'
+
+commands:
+  exodia:
+    description: ExodiaCore command
+    usage: /<command>
+    aliases:
+    - ex
+    - exodiaCore
+    - exodia

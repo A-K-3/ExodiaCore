@@ -1,4 +1,0 @@
-name: ExodiaCore
-version: '1.0'
-main: net.exodia.exodiaCore.ExodiaCore
-api-version: '1.21'

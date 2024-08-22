@@ -1,6 +1,7 @@
 package net.exodia.exodiaCore.manager.plugin;
 
 import net.exodia.exodiaCore.ExodiaCore;
+import net.exodia.exodiaCore.manager.config.ConfigManager;
 
 public class PluginManager {
 
@@ -16,6 +17,10 @@ public class PluginManager {
 
         setStatus(PluginStatus.DISABLING);
         plugin.getServer().getPluginManager().disablePlugin(plugin);
+    }
+
+    public void configReload() {
+        plugin.configManagers.forEach(ConfigManager::reload);
     }
 
     public boolean isStatus(PluginStatus status) {

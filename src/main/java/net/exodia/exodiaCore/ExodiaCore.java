@@ -1,18 +1,64 @@
 package net.exodia.exodiaCore;
 
+import net.exodia.exodiaCore.manager.EventManager;
+import net.exodia.exodiaCore.manager.config.ConfigManager;
+import net.exodia.exodiaCore.manager.cooldown.CooldownManager;
+import net.exodia.exodiaCore.manager.plugin.PluginManager;
+import net.exodia.exodiaCore.manager.plugin.PluginStatus;
+import net.exodia.exodiaCore.utils.SchedulerWrapper;
+import net.exodia.exodiaCore.utils.plugin.PluginUtils;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public final class ExodiaCore extends JavaPlugin {
+import java.util.List;
+import java.util.Objects;
+
+public final class ExodiaCore extends JavaPlugin implements CommandExecutor {
+
+    public final CooldownManager cooldownManager = new CooldownManager(this);
+    public final PluginManager pluginManager = new PluginManager(this);
+    public final SchedulerWrapper pluginScheduler = new SchedulerWrapper(this);
+    public final ConfigManager configManager = new ConfigManager(this, null);
+
+    public final List<ConfigManager> configManagers = List.of(configManager);
+
 
     @Override
     public void onEnable() {
-        // Plugin startup logicaaa
-        System.out.println("Hola");
+        // Plugin startup logic
+        new EventManager(this);
 
+        this.getCommand("exodia").setExecutor(this);
+
+
+        pluginManager.configReload();
+        PluginUtils.sendWarnMessage(PluginUtils.PLUGIN_NAME + " has been enabled!");
+        pluginManager.setStatus(PluginStatus.ENABLED);
     }
 
     @Override
     public void onDisable() {
         // Plugin shutdown logic
     }
+
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (args.length == 0) {
+            sender.sendMessage("ExodiaCore v1.0.0");
+            return true;
+        }
+
+        if (args[0].equalsIgnoreCase("reload")) {
+            pluginManager.configReload();
+            sender.sendMessage("Config reloaded!");
+            return true;
+        }
+        return false;
+    }
 }
+
+
+
+

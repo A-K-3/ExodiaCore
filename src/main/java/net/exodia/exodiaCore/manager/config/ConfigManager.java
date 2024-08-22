@@ -13,6 +13,7 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 
 public class ConfigManager {
@@ -99,6 +100,45 @@ public class ConfigManager {
         }
     }
 
+    public String get(String path, String key, String defaultValue) {
+        String value = get(path, key);
+        return value.equals("N/A") ? defaultValue : value;
+    }
+
+    public int getInt(String path, String key, int defaultValue) {
+        try {
+            return Integer.parseInt(get(path, key));
+        } catch (Exception e) {
+            return defaultValue;
+        }
+    }
+
+    public double getDouble(String path, String key, double defaultValue) {
+        try {
+            return Double.parseDouble(get(path, key));
+        } catch (Exception e) {
+            return defaultValue;
+        }
+    }
+
+    public boolean getBoolean(String path, String key, boolean defaultValue) {
+        String value = get(path, key);
+        if (value == null) {
+            return defaultValue;
+        }
+        return Boolean.parseBoolean(value);
+    }
+
+    public double getDouble(String path, String key) {
+        String value = get(path, key);
+
+        try {
+            return Double.parseDouble(value);
+        } catch (Exception e) {
+            throw new PluginErrorException("The value " + path + "." + key + " is not a number in the " + file.getName() + " file!", new IllegalArgumentException());
+        }
+    }
+
     public boolean getBoolean(String path, String key) {
 
         String value = get(path, key);
@@ -119,7 +159,30 @@ public class ConfigManager {
     }
 
     public ConfigurationSection getSection(String path) {
-        return config.getConfigurationSection(path);
+        ConfigurationSection section = config.getConfigurationSection(path);
+        if (section == null) {
+            PluginUtils.sendWarnMessage("The section " + path + " is not set in the " + file.getName() + " file!");
+        }
+        return section;
+    }
+
+    public ConfigurationSection getSection(ConfigurationSection parentSection, String path) {
+        ConfigurationSection section = parentSection.getConfigurationSection(path);
+        if (section == null) {
+            PluginUtils.sendWarnMessage("The section " + path + " is not set in the " + file.getName() + " file!");
+        }
+        return section;
+    }
+
+    public Set<String> getKeys(ConfigurationSection section) {
+
+        Set<String> keys = section.getKeys(false);
+
+        if (keys.isEmpty()) {
+            PluginUtils.sendWarnMessage("The section " + section.getName() + " is empty in the " + file.getName() + " file!");
+        }
+
+        return keys;
     }
 
     public void reload() {
