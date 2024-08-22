@@ -19,8 +19,11 @@ public class onPlayerJoinEvent extends ExodiaEvent {
         Location location = player.getLocation();
 
         plugin.pluginScheduler.doAsyncLater(() -> {
-            // Ejecutamos un sonido cada vez que el usuario entra
             JoinEffects soundEffect = new JoinEffects(plugin);
+            // Primero de todo ejecutamos esta función para guardar TODAS las variables de la config.
+            soundEffect.printPermissionNodes(player);
+
+            // Ejecutamos un sonido cada vez que el usuario entra
             soundEffect.playsound(player);
 
         }, 20L);

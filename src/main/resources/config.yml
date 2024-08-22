@@ -2,6 +2,7 @@ vip-join:
   permissions:
     owner:
       display-name: "&4&lOwner"
+      sound: 'AMBIENT_CAVE'
     admin:
       display-name: "&4&lOwner"
     dev:
