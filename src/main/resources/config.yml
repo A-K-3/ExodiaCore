@@ -9,14 +9,14 @@ vip-join:
 
   default-permission: "default"
 
-  default-join:
-    sound: "ENTITY_PLAYER_LEVELUP"
-    volume: 1.0
-    pitch: 1.0
-    lightning: true
-    particle: 'DRAGON_BREATH'
-    particle-amount: 100
-    offset-x: 1
-    offset-y: 1
-    offset-z: 1
-    optional-value: 0.1
+default-join:
+  sound: "ENTITY_PLAYER_LEVELUP"
+  volume: 1.0
+  pitch: 1.0
+  lightning: true
+  particle: 'DRAGON_BREATH'
+  particle-amount: 100
+  offset-x: 1.0
+  offset-y: 1.0
+  offset-z: 1.0
+  optional-value: 0.1

@@ -37,22 +37,23 @@ public class JoinEffects {
     }
 
     private void printNodeDetails(ConfigurationSection permissionsSection, String node) {
-        String defaultSound = getDefault("default-join.sound");
-        int defaultVolume = getDefaultInt("default-join.volume");
-        int defaultPitch = getDefaultInt("default-join.pitch");
-        boolean defaultLightning = getDefaultBoolean("default-join.lightning");
-        boolean defaultParticles = getDefaultBoolean("default-join.particle");
-        int defaultParticleAmount = getDefaultInt("default-join.particle-amount");
-        int defaultOffsetX = getDefaultInt("default-join.offset-x");
-        int defaultOffsetY = getDefaultInt("default-join.offset-y");
-        int defaultOffsetZ = getDefaultInt("default-join.offset-z");
-        int defaultOptionalValue = getDefaultInt("default-join.optional-value");
+        String defaultSound = plugin.configManager.get("default-join", "sound");
+        double defaultVolume = plugin.configManager.getDouble("default-join", "volume");
+        double defaultPitch = plugin.configManager.getDouble("default-join", "pitch");
+        boolean defaultLightning = plugin.configManager.getBoolean("default-join", "lightning");
+        String defaultParticles = plugin.configManager.get("default-join", "particle");
+        int defaultParticleAmount = plugin.configManager.getInt("default-join", "particle-amount");
+        double defaultOffsetX = plugin.configManager.getDouble("default-join", "offset-x");
+        double defaultOffsetY = plugin.configManager.getDouble("default-join", "offset-y");
+        double defaultOffsetZ = plugin.configManager.getDouble("default-join", "offset-z");
+        double defaultOptionalValue = plugin.configManager.getDouble("default-join", "optional-value");
 
+        //TODO: Arreglar esta parte en la config para que funcione
         String sound = plugin.configManager.get(permissionsSection.getName() + "." + node, "sound", defaultSound);
         double volume = plugin.configManager.getDouble(permissionsSection.getName() + "." + node, "volume", defaultVolume);
         double pitch = plugin.configManager.getDouble(permissionsSection.getName() + "." + node, "pitch", defaultPitch);
         boolean lightning = plugin.configManager.getBoolean(permissionsSection.getName() + "." + node, "lightning", defaultLightning);
-        boolean particles = plugin.configManager.getBoolean(permissionsSection.getName() + "." + node, "particle", defaultParticles);
+        String particle = plugin.configManager.get(permissionsSection.getName() + "." + node, "particle", defaultParticles);
         int particleAmount = plugin.configManager.getInt(permissionsSection.getName() + "." + node, "particle-amount", defaultParticleAmount);
         double offsetX = plugin.configManager.getDouble(permissionsSection.getName() + "." + node, "offset-x", defaultOffsetX);
         double offsetY = plugin.configManager.getDouble(permissionsSection.getName() + "." + node, "offset-y", defaultOffsetY);
