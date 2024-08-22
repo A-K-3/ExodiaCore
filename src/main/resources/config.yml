@@ -1,0 +1,22 @@
+vip-join:
+  permissions:
+    owner:
+      display-name: "&4&lOwner"
+    admin:
+      display-name: "&4&lOwner"
+    dev:
+      display-name: "&4&lOwner"
+
+  default-permission: "default"
+
+  default-join:
+    sound: "ENTITY_PLAYER_LEVELUP"
+    volume: 1.0
+    pitch: 1.0
+    lightning: true
+    particle: 'DRAGON_BREATH'
+    particle-amount: 100
+    offset-x: 1
+    offset-y: 1
+    offset-z: 1
+    optional-value: 0.1
