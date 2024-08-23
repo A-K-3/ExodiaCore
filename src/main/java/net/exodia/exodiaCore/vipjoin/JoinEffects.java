@@ -32,7 +32,6 @@ public class JoinEffects {
 
     public void playsound(Player player) {
         if (sound == null) {
-            plugin.getLogger().warning("El nombre del sonido no está configurado para el grupo: " + node);
             return;
         }
 
@@ -42,12 +41,14 @@ public class JoinEffects {
         } catch (IllegalArgumentException ex) {
             plugin.getLogger().warning("El sonido configurado '" + sound + "' para el grupo '" + node + "' no es válido.");
         }
-
     }
 
     public void particleeffect(Player player) {
-        Particle particlefinal;
+        if (particle == null) {
+            return;
+        }
 
+        Particle particlefinal;
         try {
             particlefinal = Particle.valueOf(particle);
         } catch (IllegalArgumentException e) {
@@ -68,9 +69,6 @@ public class JoinEffects {
     public void getPlayerPermission(Player player) {
         ConfigurationSection seccion = plugin.getConfig().getConfigurationSection("vip-join.permissions");
 
-        ConfigurationSection seccionDefault = plugin.getConfig().getConfigurationSection("vip-join.");
-        String defaultnode = "";
-
         if (seccion != null) {
             Set<String> nodos = seccion.getKeys(false);
             for (String nodo : nodos) {
@@ -79,35 +77,23 @@ public class JoinEffects {
                     return;
                 }
             }
-            setConfigVariables(seccionDefault, defaultnode); // Default
         }
     }
 
     private void setConfigVariables(ConfigurationSection permissionsSection, String node) {
-        String defaultSound = plugin.configManager.get("vip-join.default-join", "sound");
-        double defaultVolume = plugin.configManager.getDouble("vip-join.default-join", "volume");
-        double defaultPitch = plugin.configManager.getDouble("vip-join.default-join", "pitch");
-        boolean defaultLightning = plugin.configManager.getBoolean("vip-join.default-join", "lightning");
-        String defaultParticles = plugin.configManager.get("vip-join.default-join", "particle");
-        int defaultParticleAmount = plugin.configManager.getInt("vip-join.default-join", "particle-amount");
-        double defaultOffsetX = plugin.configManager.getDouble("vip-join.default-join", "offset-x");
-        double defaultOffsetY = plugin.configManager.getDouble("vip-join.default-join", "offset-y");
-        double defaultOffsetZ = plugin.configManager.getDouble("vip-join.default-join", "offset-z");
-        double defaultOptionalValue = plugin.configManager.getDouble("vip-join.default-join", "optional-value");
-
         String nodePath = "vip-join.permissions." + node;
 
         // Usamos el this. este para hacer las variables globales y así usarlas en las otras funciones
-        this.sound = plugin.configManager.get(nodePath, "sound", defaultSound);
-        this.volume = plugin.configManager.getDouble(nodePath, "volume", defaultVolume);
-        this.pitch = plugin.configManager.getDouble(nodePath, "pitch", defaultPitch);
-        this.lightning = plugin.configManager.getBoolean(nodePath, "lightning", defaultLightning);
-        this.particle = plugin.configManager.get(nodePath, "particle", defaultParticles);
-        this.particleAmount = plugin.configManager.getInt(nodePath, "particle-amount", defaultParticleAmount);
-        this.offsetX = plugin.configManager.getDouble(nodePath, "offset-x", defaultOffsetX);
-        this.offsetY = plugin.configManager.getDouble(nodePath, "offset-y", defaultOffsetY);
-        this.offsetZ = plugin.configManager.getDouble(nodePath, "offset-z", defaultOffsetZ);
-        this.optionalValue = plugin.configManager.getDouble(nodePath, "optional-value", defaultOptionalValue);
+        this.sound = plugin.configManager.get(nodePath, "sound");
+        this.volume = plugin.configManager.getDouble(nodePath, "volume");
+        this.pitch = plugin.configManager.getDouble(nodePath, "pitch");
+        this.lightning = plugin.configManager.getBoolean(nodePath, "lightning");
+        this.particle = plugin.configManager.get(nodePath, "particle");
+        this.particleAmount = plugin.configManager.getInt(nodePath, "particle-amount");
+        this.offsetX = plugin.configManager.getDouble(nodePath, "offset-x");
+        this.offsetY = plugin.configManager.getDouble(nodePath, "offset-y");
+        this.offsetZ = plugin.configManager.getDouble(nodePath, "offset-z");
+        this.optionalValue = plugin.configManager.getDouble(nodePath, "optional-value");
     }
 
     private String getDefault(String path) {

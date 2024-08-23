@@ -33,16 +33,3 @@ vip-join:
       offset-y: 1
       offset-z: 1
       optional-value: 0.1
-
-  # No borrar este. Es el default que pillará cuando un grupo no esté asingado. Así no se genera errores
-  default-join:
-    sound: "ENTITY_PLAYER_LEVELUP"
-    volume: 1.0
-    pitch: 1.0
-    lightning: true
-    particle: 'DRAGON_BREATH'
-    particle-amount: 100
-    offset-x: 1.0
-    offset-y: 1.0
-    offset-z: 1.0
-    optional-value: 0.1
