@@ -2,11 +2,11 @@ package net.exodia.exodiaCore.vipjoin;
 
 import net.exodia.exodiaCore.ExodiaCore;
 import net.exodia.exodiaCore.utils.plugin.PluginUtils;
+import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 public class JoinEffects {
@@ -21,48 +21,79 @@ public class JoinEffects {
     private double offsetY;
     private double offsetZ;
     private double optionalValue;
+    private String node;
 
     private final ExodiaCore plugin;
+
 
     public JoinEffects(ExodiaCore plugin) {
         this.plugin = plugin;
     }
 
     public void playsound(Player player) {
-        // TODO: Hacer el playsound y los demás efectos del antiguo plugin ahora teniendo todos los valores de la config guardados en variables
-        String group = "test";
+        if (sound == null) {
+            plugin.getLogger().warning("El nombre del sonido no está configurado para el grupo: " + node);
+            return;
+        }
 
-        PluginUtils.sendConsoleMessage("Permiso: " + group);
-
-        System.out.println(sound);
-
-    }
-
-    public void printPermissionNodes(Player player) {
-        ConfigurationSection seccion = plugin.getConfig().getConfigurationSection("vip-join.permissions");
-        if (seccion != null) {
-            Set<String> nodos = seccion.getKeys(false);
-            for (String nodo : nodos) {
-                if (player.hasPermission(nodo)) {
-                    printNodeDetails(seccion, nodo);
-                    return;
-                }
-            }
+        try {
+            Sound finalSound = Sound.valueOf(sound.toUpperCase());
+            player.playSound(player.getLocation(), finalSound, (float) volume, (float) pitch);
+        } catch (IllegalArgumentException ex) {
+            plugin.getLogger().warning("El sonido configurado '" + sound + "' para el grupo '" + node + "' no es válido.");
         }
 
     }
 
-    private void printNodeDetails(ConfigurationSection permissionsSection, String node) {
-        String defaultSound = plugin.configManager.get("default-join", "sound");
-        double defaultVolume = plugin.configManager.getDouble("default-join", "volume");
-        double defaultPitch = plugin.configManager.getDouble("default-join", "pitch");
-        boolean defaultLightning = plugin.configManager.getBoolean("default-join", "lightning");
-        String defaultParticles = plugin.configManager.get("default-join", "particle");
-        int defaultParticleAmount = plugin.configManager.getInt("default-join", "particle-amount");
-        double defaultOffsetX = plugin.configManager.getDouble("default-join", "offset-x");
-        double defaultOffsetY = plugin.configManager.getDouble("default-join", "offset-y");
-        double defaultOffsetZ = plugin.configManager.getDouble("default-join", "offset-z");
-        double defaultOptionalValue = plugin.configManager.getDouble("default-join", "optional-value");
+    public void particleeffect(Player player) {
+        Particle particlefinal;
+
+        try {
+            particlefinal = Particle.valueOf(particle);
+        } catch (IllegalArgumentException e) {
+            plugin.getLogger().warning("Partícula inválida en la config: " + particle);
+            return;
+        }
+
+        player.getWorld().spawnParticle(particlefinal, player.getLocation(), particleAmount, offsetX, offsetY, offsetZ, optionalValue);
+
+    }
+
+    public void lightning(Player player) {
+        if (lightning) {
+            player.getLocation().getWorld().strikeLightningEffect(player.getLocation());
+        }
+    }
+
+    public void getPlayerPermission(Player player) {
+        ConfigurationSection seccion = plugin.getConfig().getConfigurationSection("vip-join.permissions");
+
+        ConfigurationSection seccionDefault = plugin.getConfig().getConfigurationSection("vip-join.");
+        String defaultnode = "";
+
+        if (seccion != null) {
+            Set<String> nodos = seccion.getKeys(false);
+            for (String nodo : nodos) {
+                if (player.hasPermission(nodo)) {
+                    setConfigVariables(seccion, nodo);
+                    return;
+                }
+            }
+            setConfigVariables(seccionDefault, defaultnode); // Default
+        }
+    }
+
+    private void setConfigVariables(ConfigurationSection permissionsSection, String node) {
+        String defaultSound = plugin.configManager.get("vip-join.default-join", "sound");
+        double defaultVolume = plugin.configManager.getDouble("vip-join.default-join", "volume");
+        double defaultPitch = plugin.configManager.getDouble("vip-join.default-join", "pitch");
+        boolean defaultLightning = plugin.configManager.getBoolean("vip-join.default-join", "lightning");
+        String defaultParticles = plugin.configManager.get("vip-join.default-join", "particle");
+        int defaultParticleAmount = plugin.configManager.getInt("vip-join.default-join", "particle-amount");
+        double defaultOffsetX = plugin.configManager.getDouble("vip-join.default-join", "offset-x");
+        double defaultOffsetY = plugin.configManager.getDouble("vip-join.default-join", "offset-y");
+        double defaultOffsetZ = plugin.configManager.getDouble("vip-join.default-join", "offset-z");
+        double defaultOptionalValue = plugin.configManager.getDouble("vip-join.default-join", "optional-value");
 
         String nodePath = "vip-join.permissions." + node;
 
@@ -78,9 +109,6 @@ public class JoinEffects {
         this.offsetZ = plugin.configManager.getDouble(nodePath, "offset-z", defaultOffsetZ);
         this.optionalValue = plugin.configManager.getDouble(nodePath, "optional-value", defaultOptionalValue);
     }
-
-
-
 
     private String getDefault(String path) {
         return plugin.configManager.get("vip-join", path);

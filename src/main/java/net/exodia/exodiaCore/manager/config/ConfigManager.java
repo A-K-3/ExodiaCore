@@ -135,6 +135,7 @@ public class ConfigManager {
         try {
             return Double.parseDouble(value);
         } catch (Exception e) {
+            System.err.println("Error al convertir '" + value + "' a double.");
             throw new PluginErrorException("The value " + path + "." + key + " is not a number in the " + file.getName() + " file!", new IllegalArgumentException());
         }
     }

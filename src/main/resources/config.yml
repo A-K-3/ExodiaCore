@@ -1,23 +1,48 @@
 vip-join:
   permissions:
     owner:
-      display-name: "&4&lOwner"
-      sound: 'AMBIENT_CAVE'
+      sound: 'ENTITY_WITHER_DEATH'
+      volume: 0.8
+      pitch: 1.0
+      lightning: true
+      particle: 'LAVA'
+      particle-amount: 1000 # Esto sería el número de partículas
+      offset-x: 1 # Extensión en el eje X de la partícula
+      offset-y: 1 # Extensión en el eje Y de la partícula
+      offset-z: 1 # Extensión en el eje Z de la partícula
+      optional-value: 0.1 # Valor opcional que depende de cada partícula. En general significa "velocidad"
     admin:
-      display-name: "&4&lOwner"
+      sound: 'ENTITY_WITHER_DEATH'
+      volume: 0.8
+      pitch: 1.0
+      lightning: true
+      particle: 'FLAME'
+      particle-amount: 1000
+      offset-x: 1
+      offset-y: 1
+      offset-z: 1
+      optional-value: 0.1
     dev:
-      display-name: "&4&lOwner"
+      sound: 'ENTITY_EVOKER_PREPARE_WOLOLO'
+      volume: 1.0
+      pitch: 1.0
+      lightning: true
+      particle: 'VILLAGER_HAPPY'
+      particle-amount: 1000
+      offset-x: 1
+      offset-y: 1
+      offset-z: 1
+      optional-value: 0.1
 
-  default-permission: "default"
-
-default-join:
-  sound: "ENTITY_PLAYER_LEVELUP"
-  volume: 1.0
-  pitch: 1.0
-  lightning: true
-  particle: 'DRAGON_BREATH'
-  particle-amount: 100
-  offset-x: 1.0
-  offset-y: 1.0
-  offset-z: 1.0
-  optional-value: 0.1
+  # No borrar este. Es el default que pillará cuando un grupo no esté asingado. Así no se genera errores
+  default-join:
+    sound: "ENTITY_PLAYER_LEVELUP"
+    volume: 1.0
+    pitch: 1.0
+    lightning: true
+    particle: 'DRAGON_BREATH'
+    particle-amount: 100
+    offset-x: 1.0
+    offset-y: 1.0
+    offset-z: 1.0
+    optional-value: 0.1
