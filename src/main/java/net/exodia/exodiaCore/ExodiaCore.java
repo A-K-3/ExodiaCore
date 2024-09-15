@@ -1,5 +1,7 @@
 package net.exodia.exodiaCore;
 
+import me.ulrich.koth.Koth;
+import me.ulrich.koth.api.KothAPIManager;
 import net.exodia.exodiaCore.manager.EventManager;
 import net.exodia.exodiaCore.manager.config.ConfigManager;
 import net.exodia.exodiaCore.manager.cooldown.CooldownManager;
@@ -23,6 +25,7 @@ public final class ExodiaCore extends JavaPlugin implements CommandExecutor {
     public final ConfigManager configManager = new ConfigManager(this, null);
 
     public final List<ConfigManager> configManagers = List.of(configManager);
+    public KothAPIManager kothAPIManager = null;
 
 
     @Override
@@ -36,6 +39,8 @@ public final class ExodiaCore extends JavaPlugin implements CommandExecutor {
         pluginManager.configReload();
         PluginUtils.sendWarnMessage(PluginUtils.PLUGIN_NAME + " has been enabled!");
         pluginManager.setStatus(PluginStatus.ENABLED);
+
+        kothAPIManager = new KothAPIManager();
     }
 
     @Override
