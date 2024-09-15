@@ -24,17 +24,12 @@ public class onKothStartEvent extends ExodiaEvent {
     public void kothBossBar(KothCaptureEvent e) {
         UUID kothUUID = e.getKothUUID();
         String player = e.getPlayer().getName();
-        String kothname = String.valueOf(plugin.kothAPIManager.getKothName(kothUUID));
-
-        bossbar = Bukkit.createBossBar("HOLA", Boss);
-
-        // EQUALS
-        if (kothname.equals("Nether")) {
-            System.out.println("start bossbar");
-            System.out.println(player + " está capturando el KOTH " + kothname);
+        String kothname = plugin.kothAPIManager.getKothName(kothUUID).get();
 
 
-        }
+        System.out.println("start bossbar");
+        System.out.println(player + " está capturando el KOTH " + kothname);
+
 // TODO CONFIG
     }
 }

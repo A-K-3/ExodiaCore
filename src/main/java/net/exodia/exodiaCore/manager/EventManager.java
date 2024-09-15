@@ -1,6 +1,7 @@
 package net.exodia.exodiaCore.manager;
 
 import net.exodia.exodiaCore.ExodiaCore;
+import net.exodia.exodiaCore.event.kothbossbar.onKothStartEvent;
 import net.exodia.exodiaCore.event.vipjoin.onPlayerJoinEvent;
 
 public class EventManager {
@@ -14,5 +15,6 @@ public class EventManager {
 
     public void registerEvents() {
         plugin.getServer().getPluginManager().registerEvents(new onPlayerJoinEvent(), plugin);
+        plugin.getServer().getPluginManager().registerEvents(new onKothStartEvent(), plugin);
     }
 }
