@@ -11,8 +11,6 @@ import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-
-import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 public class onKothStartEvent extends ExodiaEvent implements Listener {
@@ -56,7 +54,7 @@ public class onKothStartEvent extends ExodiaEvent implements Listener {
             int seconds = kothDefaultTimeSeconds % 60;
             String kothDefaultTime = minutes + "m " + seconds + "s";
             if (kothPlayer != null && !kothPlayer.equalsIgnoreCase("§cNinguno")) {
-                String title = "§cTiempo restante: §b" + kothTimeLeft + " §cCapturando: §b" + kothPlayer + " §c(" + kothPlayerClan + ")";
+                String title = "§cTiempo restante: §b" + kothTimeLeft + " §cCapturando: §b" + kothPlayer + " §c(" + kothPlayerClan + "§c)";
                 bossbar.setTitle(title);
                 // TODO: Hacer que el progress vaya en función del tiempo restante %ukoth_{end}_timeleft%
                 bossbar.setProgress(1);
