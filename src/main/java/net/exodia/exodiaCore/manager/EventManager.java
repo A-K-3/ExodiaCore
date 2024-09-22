@@ -2,6 +2,7 @@ package net.exodia.exodiaCore.manager;
 
 import net.exodia.exodiaCore.ExodiaCore;
 import net.exodia.exodiaCore.event.kothbossbar.OnKothStartEvent;
+import net.exodia.exodiaCore.event.voiddamage.OnEntityDamageEvent;
 
 public class EventManager {
 
@@ -13,6 +14,12 @@ public class EventManager {
     }
 
     public void registerEvents() {
+
         plugin.getServer().getPluginManager().registerEvents(new OnKothStartEvent(), plugin);
+
+
+        // Void Damage
+        plugin.getServer().getPluginManager().registerEvents(new OnEntityDamageEvent(), plugin);
     }
+
 }
