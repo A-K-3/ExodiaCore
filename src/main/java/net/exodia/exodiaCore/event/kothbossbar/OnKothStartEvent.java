@@ -13,7 +13,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import java.util.UUID;
 
-public class onKothStartEvent extends ExodiaEvent implements Listener {
+public class OnKothStartEvent extends ExodiaEvent implements Listener {
 
     private BossBar bossbar;
     UUID kothUUID = null;
