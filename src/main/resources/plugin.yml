@@ -11,3 +11,9 @@ commands:
     - ex
     - exodiaCore
     - exodia
+  ps:
+    description: Redirect to /claimfly
+    subcommands:
+      fly:
+        description: Activa el vuelo.
+        usage: /ps fly

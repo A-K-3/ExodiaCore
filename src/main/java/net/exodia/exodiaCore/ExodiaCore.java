@@ -1,6 +1,5 @@
 package net.exodia.exodiaCore;
 
-import me.ulrich.koth.Koth;
 import me.ulrich.koth.api.KothAPIManager;
 import net.exodia.exodiaCore.manager.EventManager;
 import net.exodia.exodiaCore.manager.config.ConfigManager;
@@ -15,7 +14,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.List;
-import java.util.Objects;
 
 public final class ExodiaCore extends JavaPlugin implements CommandExecutor {
 
