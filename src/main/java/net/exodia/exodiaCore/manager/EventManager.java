@@ -1,6 +1,7 @@
 package net.exodia.exodiaCore.manager;
 
 import net.exodia.exodiaCore.ExodiaCore;
+import net.exodia.exodiaCore.event.Explote.ExplosionEvent;
 import net.exodia.exodiaCore.event.claimfly.ClaimFlyEvent;
 import net.exodia.exodiaCore.event.kothbossbar.OnKothStartEvent;
 import net.exodia.exodiaCore.event.voiddamage.OnEntityDamageEvent;
@@ -23,6 +24,8 @@ public class EventManager {
         plugin.getServer().getPluginManager().registerEvents(new OnEntityDamageEvent(), plugin);
 
         plugin.getServer().getPluginManager().registerEvents(new ClaimFlyEvent(), plugin);
+
+        plugin.getServer().getPluginManager().registerEvents(new ExplosionEvent(), plugin);
     }
 
 }
