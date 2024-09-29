@@ -1,1 +1,10 @@
-no-explosion-worlds: []
+no-explosion-worlds:
+  - world
+  - world_the_end
+  - world_nether
+  - netherkoth
+  - KOTHEnd
+
+crafter-blocker:
+  - HOPPER
+  - NETHERITE_UPGRADE_SMITHING_TEMPLATE

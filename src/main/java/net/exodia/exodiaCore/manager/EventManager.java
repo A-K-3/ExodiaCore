@@ -1,6 +1,7 @@
 package net.exodia.exodiaCore.manager;
 
 import net.exodia.exodiaCore.ExodiaCore;
+import net.exodia.exodiaCore.event.CrafterEvent.CrafterEvent;
 import net.exodia.exodiaCore.event.Explote.ExplosionEvent;
 import net.exodia.exodiaCore.event.claimfly.ClaimFlyEvent;
 import net.exodia.exodiaCore.event.kothbossbar.OnKothStartEvent;
@@ -26,6 +27,8 @@ public class EventManager {
         plugin.getServer().getPluginManager().registerEvents(new ClaimFlyEvent(), plugin);
 
         plugin.getServer().getPluginManager().registerEvents(new ExplosionEvent(), plugin);
+
+        plugin.getServer().getPluginManager().registerEvents(new CrafterEvent(), plugin);
     }
 
 }
