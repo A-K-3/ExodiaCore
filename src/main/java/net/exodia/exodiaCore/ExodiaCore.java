@@ -34,15 +34,15 @@ public final class ExodiaCore extends JavaPlugin implements CommandExecutor {
         this.getCommand("exodia").setExecutor(this);
 
 
-        pluginManager.configReload();
-        PluginUtils.sendWarnMessage(PluginUtils.PLUGIN_NAME + " has been enabled!");
-        pluginManager.setStatus(PluginStatus.ENABLED);
-
         if (getServer().getPluginManager().getPlugin("UltimateKoth") != null) {
             kothAPIManager = new KothAPIManager();
         } else {
             PluginUtils.sendErrorMessage("UltimateKoth not found!");
         }
+
+        pluginManager.configReload();
+        PluginUtils.sendWarnMessage(PluginUtils.PLUGIN_NAME + " has been enabled!");
+        pluginManager.setStatus(PluginStatus.ENABLED);
     }
 
     @Override
