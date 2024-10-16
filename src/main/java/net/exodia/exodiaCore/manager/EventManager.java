@@ -1,9 +1,9 @@
 package net.exodia.exodiaCore.manager;
 
 import net.exodia.exodiaCore.ExodiaCore;
-import net.exodia.exodiaCore.event.CrafterEvent.CrafterEvent;
-import net.exodia.exodiaCore.event.Explote.ExplosionEvent;
-import net.exodia.exodiaCore.event.canceldragon.OnBlockPlace;
+import net.exodia.exodiaCore.event.crafterevent.CrafterEvent;
+import net.exodia.exodiaCore.event.explosion.ExplosionEvent;
+import net.exodia.exodiaCore.event.canceldragon.OnPlayerInteract;
 import net.exodia.exodiaCore.event.claimfly.ClaimFlyEvent;
 import net.exodia.exodiaCore.event.kothbossbar.OnKothStartEvent;
 import net.exodia.exodiaCore.event.voiddamage.OnEntityDamageEvent;
@@ -31,7 +31,7 @@ public class EventManager {
 
         plugin.getServer().getPluginManager().registerEvents(new CrafterEvent(), plugin);
 
-        plugin.getServer().getPluginManager().registerEvents(new OnBlockPlace(), plugin);
+        plugin.getServer().getPluginManager().registerEvents(new OnPlayerInteract(), plugin);
     }
 
 }

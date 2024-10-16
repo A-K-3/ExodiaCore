@@ -1,4 +1,4 @@
-package net.exodia.exodiaCore.event.CrafterEvent;
+package net.exodia.exodiaCore.event.crafterevent;
 
 import net.exodia.exodiaCore.event.ExodiaEvent;
 import org.bukkit.ChatColor;

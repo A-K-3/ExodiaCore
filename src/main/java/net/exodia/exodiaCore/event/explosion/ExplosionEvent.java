@@ -1,4 +1,4 @@
-package net.exodia.exodiaCore.event.Explote;
+package net.exodia.exodiaCore.event.explosion;
 
 import net.exodia.exodiaCore.event.ExodiaEvent;
 import org.bukkit.World;

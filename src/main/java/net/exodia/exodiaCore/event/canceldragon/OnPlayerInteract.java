@@ -8,7 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class OnBlockPlace extends ExodiaEvent {
+public class OnPlayerInteract extends ExodiaEvent {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
