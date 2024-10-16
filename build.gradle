@@ -45,7 +45,7 @@ java {
 publishing {
     repositories {
         maven {
-            name = 'GitHubPackages'
+            name = 'githubpackages'
             url = uri('https://maven.pkg.github.com/A-K-3/ExodiaCore')
             credentials {
                 username = System.getenv("GITHUB_ACTOR")
