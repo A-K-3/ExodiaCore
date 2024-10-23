@@ -1,16 +1,12 @@
-name: ExodiaCore
-version: '1.0'
-main: net.exodia.exodiaCore.ExodiaCore
+name: GMIPCore
+version: '0.0.1'
+main: net.gmip.core.GMIPCore
 api-version: '1.21'
 
 commands:
-  exodia:
-    description: ExodiaCore command
+  gmip:
+    description: GMIPCore command
     usage: /<command>
-    aliases:
-    - ex
-    - exodiaCore
-    - exodia
   ps:
     description: Redirect to /claimfly
     subcommands:
