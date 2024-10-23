@@ -4,7 +4,7 @@ main: net.gmip.core.GMIPCore
 api-version: '1.21'
 
 commands:
-  exodia:
+  gmip:
     description: GMIPCore command
     usage: /<command>
   ps:
