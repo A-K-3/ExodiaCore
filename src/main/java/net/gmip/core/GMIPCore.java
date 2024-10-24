@@ -46,7 +46,7 @@ public final class GMIPCore extends JavaPlugin implements CommandExecutor {
         pluginManager.setStatus(PluginStatus.ENABLED);
 
         if (npcConfigManager.getBoolean("active")) {
-            new NPCTask(this).runTaskTimerAsynchronously(this, 0L, 20L * npcConfigManager.getInt("npc", "update"));
+            new NPCTask(this).runTaskTimerAsynchronously(this, 0L, 20L * 60L * npcConfigManager.getInt("npc", "update"));
         }
     }
 
