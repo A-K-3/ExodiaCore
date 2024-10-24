@@ -61,30 +61,35 @@ public class ConfigManager {
         saveResource(plugin, resourcePath, files[1], files[0]);
     }
 
-    public String get(String path, String key) {
-        if (configCache.containsKey(path)) {
+    public String get(String path) {
+        return get(path, "");
+    }
 
-            HashMap<String, String> map = configCache.get(path);
+    public String get(String path, String key) {
+        String fullPath = key.isEmpty() ? path : path + "." + key;
+
+        if (configCache.containsKey(fullPath)) {
+            HashMap<String, String> map = configCache.get(fullPath);
             if (map.containsKey(key)) {
                 return map.get(key);
             }
 
-            configCache.put(path, new HashMap<>() {{
-                put(key, config.getString(path + "." + key, "N/A"));
+            configCache.put(fullPath, new HashMap<>() {{
+                put(key, config.getString(fullPath, "N/A"));
             }});
         }
 
-        String value = config.getString(path + "." + key, "N/A");
+        String value = config.getString(fullPath, "N/A");
         byte[] bytes = value.getBytes(StandardCharsets.ISO_8859_1);
         value = new String(bytes, StandardCharsets.UTF_8);
         String finalValue = value;
 
-        configCache.put(path, new HashMap<>() {{
+        configCache.put(fullPath, new HashMap<>() {{
             put(key, finalValue);
         }});
 
         if (value.equals("N/A")) {
-            PluginUtils.sendWarnMessage("The value " + path + "." + key + " is not set in the " + file.getName() + " file!");
+            PluginUtils.sendWarnMessage("The value " + fullPath + " is not set in the " + file.getName() + " file!");
         }
 
         return value;
@@ -140,8 +145,11 @@ public class ConfigManager {
         }
     }
 
-    public boolean getBoolean(String path, String key) {
+    public boolean getBoolean(String path) {
+        return getBoolean(path, "");
+    }
 
+    public boolean getBoolean(String path, String key) {
         String value = get(path, key);
 
         if (value == null) {

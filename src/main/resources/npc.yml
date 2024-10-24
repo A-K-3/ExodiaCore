@@ -1,0 +1,27 @@
+active: true
+npc:
+  # Id del NPC
+  id: 26
+
+  # Nombre del Holograma a desactivar
+  hologram: "mercadonegro"
+
+  # Cada cuantos segundos el servidor comprobara si el NPC está activo
+  update: 5
+
+schedule:
+  days:
+    MONDAY: true
+    TUESDAY: true
+    WEDNESDAY: true
+    THURSDAY: true
+    FRIDAY: true
+    SATURDAY: true
+    SUNDAY: true
+
+messages:
+  # Mensaje que se mostrará cuando el NPC se active
+  onActivate: "Se ha activado el Mercader "
+
+  # Mensaje que se mostrará cuando el NPC se desactive
+  onDeactivate: "Se ha desactivado el Mercader "

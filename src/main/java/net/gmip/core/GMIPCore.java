@@ -6,6 +6,7 @@ import net.gmip.core.manager.config.ConfigManager;
 import net.gmip.core.manager.cooldown.CooldownManager;
 import net.gmip.core.manager.plugin.PluginManager;
 import net.gmip.core.manager.plugin.PluginStatus;
+import net.gmip.core.task.NPCTask;
 import net.gmip.core.utils.SchedulerWrapper;
 import net.gmip.core.utils.plugin.PluginUtils;
 import org.bukkit.command.Command;
@@ -21,8 +22,9 @@ public final class GMIPCore extends JavaPlugin implements CommandExecutor {
     public final PluginManager pluginManager = new PluginManager(this);
     public final SchedulerWrapper pluginScheduler = new SchedulerWrapper(this);
     public final ConfigManager configManager = new ConfigManager(this, null);
+    public final ConfigManager npcConfigManager = new ConfigManager(this, "npc.yml");
 
-    public final List<ConfigManager> configManagers = List.of(configManager);
+    public final List<ConfigManager> configManagers = List.of(configManager, npcConfigManager);
     public KothAPIManager kothAPIManager = null;
 
 
@@ -42,6 +44,10 @@ public final class GMIPCore extends JavaPlugin implements CommandExecutor {
         pluginManager.configReload();
         PluginUtils.sendWarnMessage(PluginUtils.PLUGIN_NAME + " has been enabled!");
         pluginManager.setStatus(PluginStatus.ENABLED);
+
+        if (npcConfigManager.getBoolean("active")) {
+            new NPCTask(this).runTaskTimerAsynchronously(this, 0L, 20L * npcConfigManager.getInt("npc", "update"));
+        }
     }
 
     @Override

@@ -2,6 +2,7 @@ name: GMIPCore
 version: '0.0.1'
 main: net.gmip.core.GMIPCore
 api-version: '1.21'
+depend: [ Citizens ]
 
 commands:
   gmip:
