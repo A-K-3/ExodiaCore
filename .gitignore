@@ -118,8 +118,7 @@ run/
 !gradle-wrapper.jar
 =======
 .idea/
-
-.gradle
+.gradle/
 gradle
 **/build/
 !src/**/build/
