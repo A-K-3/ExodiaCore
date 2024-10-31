@@ -8,6 +8,7 @@ import net.gmip.core.manager.plugin.PluginManager;
 import net.gmip.core.manager.plugin.PluginStatus;
 import net.gmip.core.task.NPCTask;
 import net.gmip.core.utils.SchedulerWrapper;
+import net.gmip.core.utils.Staff;
 import net.gmip.core.utils.plugin.PluginUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -34,6 +35,7 @@ public final class GMIPCore extends JavaPlugin implements CommandExecutor {
         new EventManager(this);
 
         this.getCommand("gmip").setExecutor(this);
+        this.getCommand("staff").setExecutor(new Staff(this));
 
         if (getServer().getPluginManager().getPlugin("UltimateKoth") != null) {
             kothAPIManager = new KothAPIManager();
