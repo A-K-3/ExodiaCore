@@ -16,14 +16,14 @@ import java.util.UUID;
 
 public class Staff implements CommandExecutor {
     private final GMIPCore plugin;
-    public HashMap<UUID, ItemStack[]> savedInventories = new HashMap<>(); // Guardar inventario de StaffMode
+    private final HashMap<UUID, ItemStack[]> savedInventories = new HashMap<>();
 
-    public Staff(GMIPCore plugin) {
+    public Staff(GMIPCore plugin){
         this.plugin = plugin;
     }
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, org.bukkit.command.@NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, org.bukkit.command.@NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         if (!(sender instanceof Player)) {
             sender.sendMessage("Only player usage");
             return true;
@@ -31,20 +31,27 @@ public class Staff implements CommandExecutor {
         Player player = (Player) sender;
         UUID uuid = player.getUniqueId();
 
-        if (savedInventories.containsKey(uuid)) { // Recuperar inventario de StaffMode
+        if (savedInventories.containsKey(uuid)) { // Comprueba si el uuid está ya en el hashmap
+            // Recuperar el inventario guardado
             player.getInventory().setContents(savedInventories.get(uuid));
-            savedInventories.remove(uuid); // Eliminar el inventario de StaffMode al recuperarlo
-        } else { // Activar StaffMode y guardar el inventario original
-            savedInventories.put(uuid, player.getInventory().getContents()); // Guardar inventario actual
+            savedInventories.remove(uuid);
+        } else { // Aquí es donde se activa el StaffMode
+            // Guardamos el inventario actual
+            savedInventories.put(uuid, player.getInventory().getContents());
+
+            // Limpiamos el inventario actual
             player.getInventory().clear();
 
-            // Crear y dar ítem Freeze
+            // Freeze ITEM
             ItemStack freeze = new ItemStack(Material.BLAZE_ROD);
             ItemMeta freezeMeta = freeze.getItemMeta();
-            freezeMeta.setDisplayName("§c§lFREEZE");
+            freezeMeta.setDisplayName("&c&4lFREEZE");
+
             NamespacedKey key = new NamespacedKey(plugin, "freezeID");
             freezeMeta.getPersistentDataContainer().set(key, PersistentDataType.STRING, "freeze");
             freeze.setItemMeta(freezeMeta);
+
+            // Coloca el objeto en la posición 2 (índice 0 para la posición 1)
             player.getInventory().setItem(1, freeze);
         }
         return true;
