@@ -6,7 +6,6 @@ import net.gmip.core.event.explosion.ExplosionEvent;
 import net.gmip.core.event.canceldragon.OnPlayerInteract;
 import net.gmip.core.event.claimfly.ClaimFlyEvent;
 import net.gmip.core.event.kothbossbar.OnKothStartEvent;
-import net.gmip.core.event.staffCommandEvents.onPlayerInteractEvent;
 import net.gmip.core.event.voiddamage.OnEntityDamageEvent;
 
 public class EventManager {
@@ -33,8 +32,6 @@ public class EventManager {
         plugin.getServer().getPluginManager().registerEvents(new CrafterEvent(), plugin);
 
         plugin.getServer().getPluginManager().registerEvents(new OnPlayerInteract(), plugin);
-
-        plugin.getServer().getPluginManager().registerEvents(new onPlayerInteractEvent(), plugin);
     }
 
 }
