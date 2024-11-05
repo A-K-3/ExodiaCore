@@ -26,7 +26,7 @@ public class Staff implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, org.bukkit.command.@NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         if (!(sender instanceof Player)) {
             sender.sendMessage("Only player usage");
-            return true;
+            return true; // Cambiar a true para indicar que el comando se manejó
         }
         Player player = (Player) sender;
         UUID uuid = player.getUniqueId();
@@ -43,17 +43,17 @@ public class Staff implements CommandExecutor {
             player.getInventory().clear();
 
             // Freeze ITEM
-            ItemStack freeze = new ItemStack(Material.BLAZE_ROD);
+            ItemStack freeze = new ItemStack(Material.BLAZE_POWDER);
             ItemMeta freezeMeta = freeze.getItemMeta();
-            freezeMeta.setDisplayName("&c&4lFREEZE");
+            freezeMeta.setDisplayName("FREEZE");
 
             NamespacedKey key = new NamespacedKey(plugin, "freezeID");
             freezeMeta.getPersistentDataContainer().set(key, PersistentDataType.STRING, "freeze");
             freeze.setItemMeta(freezeMeta);
 
-            // Coloca el objeto en la posición 2 (índice 0 para la posición 1)
-            player.getInventory().setItem(1, freeze);
+            // Coloca el objeto en la posición 1 (índice 0 para la posición 1)
+            player.getInventory().setItem(0, freeze);
         }
-        return true;
+        return true; // Indica que el comando se manejó correctamente
     }
 }
