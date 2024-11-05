@@ -44,10 +44,16 @@ public class ConfigManager {
         if (fileName == null) fileName = "config.yml";
 
         file = new File(plugin.getDataFolder(), fileName);
-        config = YamlConfiguration.loadConfiguration(file);
 
         if (!file.exists()) {
             plugin.saveResource(fileName, false);
+        }
+
+        try (InputStreamReader reader = new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8)) {
+            config = YamlConfiguration.loadConfiguration(reader);
+        } catch (IOException e) {
+
+            throw new PluginErrorException("Could not load configuration file " + fileName, e);
         }
     }
 
@@ -140,7 +146,6 @@ public class ConfigManager {
         try {
             return Double.parseDouble(value);
         } catch (Exception e) {
-            System.err.println("Error al convertir '" + value + "' a double.");
             throw new PluginErrorException("The value " + path + "." + key + " is not a number in the " + file.getName() + " file!", new IllegalArgumentException());
         }
     }
