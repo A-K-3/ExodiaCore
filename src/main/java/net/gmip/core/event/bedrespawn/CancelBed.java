@@ -1,5 +1,6 @@
 package net.gmip.core.event.bedrespawn;
 
+import com.destroystokyo.paper.event.player.PlayerSetSpawnEvent;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerBedEnterEvent;
@@ -15,8 +16,8 @@ public class CancelBed implements Listener {
     }
 
     @EventHandler
-    public void cancel(PlayerInteractAtEntityEvent event) {
-        if (event.getRightClicked().getType().name().contains("BED")) {
+    public void cancel(PlayerSetSpawnEvent event) {
+        if (event.getCause().equals(PlayerSetSpawnEvent.Cause.BED)) {
             event.setCancelled(true);
         }
     }
