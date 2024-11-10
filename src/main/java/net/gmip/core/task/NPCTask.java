@@ -9,6 +9,7 @@ import net.gmip.core.utils.plugin.message.MessageUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDate;
 import java.time.format.TextStyle;
@@ -31,7 +32,7 @@ public class NPCTask extends BukkitRunnable {
     }
 
     private void updateNPCState() {
-        if (Bukkit.getOnlinePlayers().isEmpty()) return;
+        //if (Bukkit.getOnlinePlayers().isEmpty()) return; Esto no es necesario
 
         int npcId = plugin.npcConfigManager.getInt("npc", "id");
         NPC npc = CitizensAPI.getNPCRegistry().getById(npcId);
@@ -49,11 +50,11 @@ public class NPCTask extends BukkitRunnable {
         }
     }
 
-    private String getCurrentDay() {
+    private @NotNull String getCurrentDay() {
         return LocalDate.now().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH).toUpperCase();
     }
 
-    private List<String> getActiveDays() {
+    private @NotNull List<String> getActiveDays() {
         List<String> activeDays = new ArrayList<>();
         ConfigurationSection daysSection = plugin.npcConfigManager.getSection(plugin.npcConfigManager.getSection("schedule"), "days");
         Set<String> days = plugin.npcConfigManager.getKeys(daysSection);
