@@ -16,5 +16,3 @@ jobs:
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
           template: "avatar-with-link"
-          message: "Nuevo commit en {{ github.context.payload.repository.name }} por {{ commit.author.name }}"
-          include-extras: true
