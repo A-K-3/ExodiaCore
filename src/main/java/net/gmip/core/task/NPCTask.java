@@ -43,7 +43,7 @@ public class NPCTask extends BukkitRunnable {
         if (!activeDays.contains(currentDay)) {
             Bukkit.getScheduler().runTask(plugin, () -> despawnNPCAndDisableHologram(npc, hologramName));
         } else {
-            spawnNPCAndEnableHologram(npc, hologramName);
+            Bukkit.getScheduler().runTask(plugin, () -> spawnNPCAndEnableHologram(npc, hologramName));
         }
     }
 
