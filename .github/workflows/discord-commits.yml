@@ -1,19 +1,45 @@
-name: Discord
+name: Discord Commits
 
 on:
-  - push
+  push:
+    branches:
+      - main
 
 jobs:
-  disord_test_message:
+  discord:
     runs-on: ubuntu-latest
-    name: discord commits
+
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Send message to discord
+      - name: Send commit to Discord
         uses: Sniddl/discord-commits@v1.6
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
-          template: 'avatar-with-link'
+          template: "avatar-with-link"
+          message: "Nuevo commit en {{ github.context.payload.repository.name }} de {{ commit.author.name }}"
+          embed: |
+            {
+              "title": "Commit Details",
+              "description": "{{ commit.message }}",
+              "url": "{{ commit.url }}",
+              "author": {
+                "name": "{{ commit.author.name }}",
+                "icon_url": "{{ commit.author.avatar_url }}"
+              },
+              "fields": [
+                {
+                  "name": "Commit ID",
+                  "value": "{{ commit.id }}",
+                  "inline": true
+                },
+                {
+                  "name": "Timestamp",
+                  "value": "{{ commit.timestamp }}",
+                  "inline": true
+                }
+              ]
+            }
           include-extras: true
+          last-commit-only: true
