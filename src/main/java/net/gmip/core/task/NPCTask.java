@@ -38,7 +38,6 @@ public class NPCTask extends BukkitRunnable {
 
         String currentDay = getCurrentDay();
         List<String> activeDays = getActiveDays();
-
         String hologramName = plugin.npcConfigManager.get("npc", "hologram");
 
         if (!activeDays.contains(currentDay)) {
@@ -66,14 +65,8 @@ public class NPCTask extends BukkitRunnable {
     }
 
     private void despawnNPCAndDisableHologram(NPC npc, String hologramName) {
-
         Hologram hologram = DHAPI.getHologram(hologramName);
-
-        if (hologram == null) {
-            return;
-        }
-
-        if (hologram.isEnabled()) {
+        if (hologram != null && hologram.isEnabled()) {
             hologram.disable();
         }
 
@@ -85,10 +78,7 @@ public class NPCTask extends BukkitRunnable {
 
     private void spawnNPCAndEnableHologram(NPC npc, String hologramName) {
         Hologram hologram = DHAPI.getHologram(hologramName);
-
-        if (hologram == null) return;
-
-        if (hologram.isDisabled()) {
+        if (hologram != null && hologram.isDisabled()) {
             hologram.enable();
         }
 
