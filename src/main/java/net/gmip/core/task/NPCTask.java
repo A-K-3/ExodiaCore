@@ -28,10 +28,12 @@ public class NPCTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, this::updateNPCStateAsync);
+        updateNPCState();
     }
 
-    private void updateNPCStateAsync() {
+    private void updateNPCState() {
+        //if (Bukkit.getOnlinePlayers().isEmpty()) return; Esto no es necesario
+
         int npcId = plugin.npcConfigManager.getInt("npc", "id");
         NPC npc = CitizensAPI.getNPCRegistry().getById(npcId);
         if (npc == null) return;
@@ -42,7 +44,7 @@ public class NPCTask extends BukkitRunnable {
         String hologramName = plugin.npcConfigManager.get("npc", "hologram");
 
         if (!activeDays.contains(currentDay)) {
-            Bukkit.getScheduler().runTask(plugin, () -> despawnNPCAndDisableHologram(npc, hologramName));
+            despawnNPCAndDisableHologram(npc, hologramName);
         } else {
             spawnNPCAndEnableHologram(npc, hologramName);
         }
@@ -75,9 +77,6 @@ public class NPCTask extends BukkitRunnable {
 
         if (hologram.isEnabled()) {
             hologram.disable();
-        }
-
-        if (npc.isSpawned()) {
             npc.despawn();
             sendMessageToAllPlayers("onDeactivate");
         }
@@ -85,14 +84,8 @@ public class NPCTask extends BukkitRunnable {
 
     private void spawnNPCAndEnableHologram(NPC npc, String hologramName) {
         Hologram hologram = DHAPI.getHologram(hologramName);
-
-        if (hologram == null) return;
-
-        if (hologram.isDisabled()) {
+        if (hologram != null && hologram.isDisabled()) {
             hologram.enable();
-        }
-
-        if (!npc.isSpawned()) {
             npc.spawn(npc.getStoredLocation());
             sendMessageToAllPlayers("onActivate");
         }
