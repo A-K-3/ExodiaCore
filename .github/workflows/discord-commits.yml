@@ -1,21 +1,20 @@
-name: Discord Commits
+name: Discord
 
 on:
-  push:
-    branches:
-      - main
+  - push
 
 jobs:
-  discord:
+  disord_test_message:
     runs-on: ubuntu-latest
-
+    name: discord commits
     steps:
 
-      - name: Send commit to Discord
+      - name: Send message to discord
         uses: Sniddl/discord-commits@v1.6
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
-          template: "avatar-with-link"
+          template: 'avatar-with-link'
+          include-extras: true
           message: "Nuevo commit en {{ github.context.payload.repository.name }} de {{ commit.author.name }}"
           embed: |
             {
@@ -39,5 +38,3 @@ jobs:
                 }
               ]
             }
-          include-extras: true
-          last-commit-only: true
