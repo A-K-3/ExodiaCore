@@ -16,4 +16,5 @@ jobs:
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
           template: 'avatar-with-link'
+          message: 'This is a test message'
           include-extras: true
