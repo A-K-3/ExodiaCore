@@ -13,10 +13,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.time.LocalDate;
 import java.time.format.TextStyle;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class NPCTask extends BukkitRunnable {
 
@@ -29,39 +27,52 @@ public class NPCTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, this::updateNPCStateAsync);
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, this::checkAndUpdateNPCState);
     }
 
-    private void updateNPCStateAsync() {
-        NPC npc = getNPC();
-        if (npc == null) return;
+    private void checkAndUpdateNPCState() {
+        getNPC().ifPresent(npc -> {
+            String currentDay = getCurrentDay();
+            String hologramName = plugin.npcConfigManager.get("npc", "hologram");
 
-        String currentDay = getCurrentDay();
-        List<String> activeDays = getActiveDays();
-        String hologramName = plugin.npcConfigManager.get("npc", "hologram");
+            if (getActiveDays().contains(currentDay)) {
+                activateNPCIfNeeded(npc, hologramName);
+            } else {
+                deactivateNPCIfNeeded(npc, hologramName);
+            }
+        });
+    }
 
-        if (activeDays.contains(currentDay)) {
-            activateNPC(npc, hologramName);
-        } else {
-            deactivateNPC(npc, hologramName);
+    private Optional<NPC> getNPC() {
+        int npcId = plugin.npcConfigManager.getInt("npc", "id");
+        return Optional.ofNullable(CitizensAPI.getNPCRegistry().getById(npcId));
+    }
+
+    private void activateNPCIfNeeded(NPC npc, String hologramName) {
+        if (!isNPCActive) {
+            isNPCActive = true;
+            Bukkit.getScheduler().runTask(plugin, () -> toggleNPCAndHologram(npc, hologramName, true, "onActivate"));
         }
     }
 
-    private NPC getNPC() {
-        int npcId = plugin.npcConfigManager.getInt("npc", "id");
-        return CitizensAPI.getNPCRegistry().getById(npcId);
+    private void deactivateNPCIfNeeded(NPC npc, String hologramName) {
+        if (isNPCActive) {
+            isNPCActive = false;
+            Bukkit.getScheduler().runTask(plugin, () -> toggleNPCAndHologram(npc, hologramName, false, "onDeactivate"));
+        }
     }
 
-    private void activateNPC(NPC npc, String hologramName) {
-        if (isNPCActive) return;
-        isNPCActive = true;
-        Bukkit.getScheduler().runTask(plugin, () -> spawnNPCAndEnableHologram(npc, hologramName));
-    }
-
-    private void deactivateNPC(NPC npc, String hologramName) {
-        if (!isNPCActive) return;
-        isNPCActive = false;
-        Bukkit.getScheduler().runTask(plugin, () -> despawnNPCAndDisableHologram(npc, hologramName));
+    private void toggleNPCAndHologram(NPC npc, String hologramName, boolean activate, String messageKey) {
+        getHologram(hologramName).ifPresent(hologram -> {
+            if (activate) {
+                hologram.enable();
+                npc.spawn(npc.getStoredLocation());
+            } else {
+                hologram.disable();
+                npc.despawn();
+            }
+            sendMessageToAllPlayers(messageKey);
+        });
     }
 
     private @NotNull String getCurrentDay() {
@@ -69,33 +80,14 @@ public class NPCTask extends BukkitRunnable {
     }
 
     private @NotNull List<String> getActiveDays() {
-        List<String> activeDays = new ArrayList<>();
-        ConfigurationSection daysSection = plugin.npcConfigManager.getSection(plugin.npcConfigManager.getSection("schedule"), "days");
-        Set<String> days = plugin.npcConfigManager.getKeys(daysSection);
-
-        for (String day : days) {
-            if (plugin.npcConfigManager.getBoolean("schedule.days", day)) {
-                activeDays.add(day);
-            }
-        }
-        return activeDays;
+        ConfigurationSection daysSection = plugin.npcConfigManager.getSection("schedule.days");
+        return plugin.npcConfigManager.getKeys(daysSection).stream()
+                .filter(day -> plugin.npcConfigManager.getBoolean("schedule.days", day))
+                .collect(Collectors.toList());
     }
 
-    private void despawnNPCAndDisableHologram(NPC npc, String hologramName) {
-        Hologram hologram = DHAPI.getHologram(hologramName);
-        if (hologram == null) return;
-
-        hologram.disable();
-        npc.despawn();
-        sendMessageToAllPlayers("onDeactivate");
-    }
-
-    private void spawnNPCAndEnableHologram(NPC npc, String hologramName) {
-        Hologram hologram = DHAPI.getHologram(hologramName);
-        if (hologram == null) return;
-        hologram.enable();
-        npc.spawn(npc.getStoredLocation());
-        sendMessageToAllPlayers("onActivate");
+    private Optional<Hologram> getHologram(String hologramName) {
+        return Optional.ofNullable(DHAPI.getHologram(hologramName));
     }
 
     private void sendMessageToAllPlayers(String key) {
