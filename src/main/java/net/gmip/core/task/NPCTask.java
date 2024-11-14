@@ -21,6 +21,7 @@ import java.util.Set;
 public class NPCTask extends BukkitRunnable {
 
     private final GMIPCore plugin;
+    private boolean isNPCActive = false;
 
     public NPCTask(GMIPCore plugin) {
         this.plugin = plugin;
@@ -32,19 +33,35 @@ public class NPCTask extends BukkitRunnable {
     }
 
     private void updateNPCStateAsync() {
-        int npcId = plugin.npcConfigManager.getInt("npc", "id");
-        NPC npc = CitizensAPI.getNPCRegistry().getById(npcId);
+        NPC npc = getNPC();
         if (npc == null) return;
 
         String currentDay = getCurrentDay();
         List<String> activeDays = getActiveDays();
         String hologramName = plugin.npcConfigManager.get("npc", "hologram");
 
-        if (!activeDays.contains(currentDay)) {
-            Bukkit.getScheduler().runTask(plugin, () -> despawnNPCAndDisableHologram(npc, hologramName));
+        if (activeDays.contains(currentDay)) {
+            activateNPC(npc, hologramName);
         } else {
-            Bukkit.getScheduler().runTask(plugin, () -> spawnNPCAndEnableHologram(npc, hologramName));
+            deactivateNPC(npc, hologramName);
         }
+    }
+
+    private NPC getNPC() {
+        int npcId = plugin.npcConfigManager.getInt("npc", "id");
+        return CitizensAPI.getNPCRegistry().getById(npcId);
+    }
+
+    private void activateNPC(NPC npc, String hologramName) {
+        if (isNPCActive) return;
+        isNPCActive = true;
+        Bukkit.getScheduler().runTask(plugin, () -> spawnNPCAndEnableHologram(npc, hologramName));
+    }
+
+    private void deactivateNPC(NPC npc, String hologramName) {
+        if (!isNPCActive) return;
+        isNPCActive = false;
+        Bukkit.getScheduler().runTask(plugin, () -> despawnNPCAndDisableHologram(npc, hologramName));
     }
 
     private @NotNull String getCurrentDay() {
@@ -66,26 +83,19 @@ public class NPCTask extends BukkitRunnable {
 
     private void despawnNPCAndDisableHologram(NPC npc, String hologramName) {
         Hologram hologram = DHAPI.getHologram(hologramName);
-        if (hologram != null && hologram.isEnabled()) {
-            hologram.disable();
-        }
+        if (hologram == null) return;
 
-        if (npc.isSpawned()) {
-            npc.despawn();
-            sendMessageToAllPlayers("onDeactivate");
-        }
+        hologram.disable();
+        npc.despawn();
+        sendMessageToAllPlayers("onDeactivate");
     }
 
     private void spawnNPCAndEnableHologram(NPC npc, String hologramName) {
         Hologram hologram = DHAPI.getHologram(hologramName);
-        if (hologram != null && hologram.isDisabled()) {
-            hologram.enable();
-        }
-
-        if (!npc.isSpawned()) {
-            npc.spawn(npc.getStoredLocation());
-            sendMessageToAllPlayers("onActivate");
-        }
+        if (hologram == null) return;
+        hologram.enable();
+        npc.spawn(npc.getStoredLocation());
+        sendMessageToAllPlayers("onActivate");
     }
 
     private void sendMessageToAllPlayers(String key) {
