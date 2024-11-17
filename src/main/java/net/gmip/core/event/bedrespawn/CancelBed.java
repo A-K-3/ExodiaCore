@@ -7,13 +7,9 @@ import org.bukkit.event.player.PlayerBedEnterEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.jetbrains.annotations.NotNull;
+import org.spigotmc.event.player.PlayerSpawnLocationEvent;
 
 public class CancelBed implements Listener {
-
-    @EventHandler
-    public void cancel(@NotNull PlayerBedEnterEvent event) {
-        event.setCancelled(true);
-    }
 
     @EventHandler
     public void cancel(PlayerSetSpawnEvent event) {
