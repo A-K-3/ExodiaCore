@@ -57,9 +57,9 @@ public final class GMIPCore extends JavaPlugin implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (args.length == 0) {
-            sender.sendMessage("GMIPCore v1.0.0");
-            return true;
+
+        if (!sender.isOp()) {
+            return false;
         }
 
         if (args[0].equalsIgnoreCase("reload")) {
