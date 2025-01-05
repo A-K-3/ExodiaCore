@@ -1,8 +1,8 @@
 name: GMIPCore
-version: '0.0.1'
+version: '1.6.0'
 main: net.gmip.core.GMIPCore
 api-version: '1.21'
-depend: [ Citizens ]
+soft-depend: [ Citizens ]
 
 commands:
   gmip:

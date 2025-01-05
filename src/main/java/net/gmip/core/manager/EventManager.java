@@ -1,12 +1,13 @@
 package net.gmip.core.manager;
 
 import net.gmip.core.GMIPCore;
+import net.gmip.core.event.antilag.VillagerLimiter;
 import net.gmip.core.event.bedrespawn.CancelBed;
 import net.gmip.core.event.cancelpiston.OnPistonEvent;
-import net.gmip.core.event.crafterevent.CrafterEvent;
-import net.gmip.core.event.explosion.ExplosionEvent;
 import net.gmip.core.event.canceldragon.OnPlayerInteract;
 import net.gmip.core.event.claimfly.ClaimFlyEvent;
+import net.gmip.core.event.crafterevent.CrafterEvent;
+import net.gmip.core.event.explosion.ExplosionEvent;
 import net.gmip.core.event.kothbossbar.OnKothStartEvent;
 import net.gmip.core.event.voiddamage.OnEntityDamageEvent;
 
@@ -34,6 +35,8 @@ public class EventManager {
         plugin.getServer().getPluginManager().registerEvents(new CrafterEvent(), plugin);
 
         plugin.getServer().getPluginManager().registerEvents(new OnPlayerInteract(), plugin);
+
+        plugin.getServer().getPluginManager().registerEvents(new VillagerLimiter(), plugin);
 
         plugin.getServer().getPluginManager().registerEvents(new OnPistonEvent(), plugin);
     }
