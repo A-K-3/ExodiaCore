@@ -11,7 +11,7 @@ public class OnEntityDamageEvent extends ExodiaEvent {
     public void onDamage(EntityDamageEvent e) {
         if (e.getEntity() instanceof Player player) {
             // If the player falls into the void, cancel the event and set the player's health to 0
-            if (e.getCause() == EntityDamageEvent.DamageCause.VOID) {
+            if (e.getCause() == EntityDamageEvent.DamageCause.VOID && player.getWorld().getName().equals("KOTHEnd")) {
                 e.setCancelled(true);
                 player.setHealth(0);
             }

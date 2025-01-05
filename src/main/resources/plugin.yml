@@ -1,5 +1,5 @@
 name: GMIPCore
-version: '1.6.0'
+version: '1.6.1'
 main: net.gmip.core.GMIPCore
 api-version: '1.21'
 soft-depend: [ Citizens ]
